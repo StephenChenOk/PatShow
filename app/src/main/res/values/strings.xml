@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">PatShow</string>
+
+    <string name="dialog_seekbar_transition_time">Item transition time in millis</string>
+
+    <string name="msg_unsupported_op">还请期待</string>
+
+    <string name="pref_key_transition_time" translatable="false">pref_key_transition_time</string>
+
+    <string name="error_gif">x or y bound size should be at least %1$dpx and file size should be no more than %2$sM</string>
+    <string name="photo_path">photo_path</string>
+    <string name="photo_name">photo_name.jpg</string>
+    <string name="server_back">serverBack</string>
+</resources>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="grayIconTint">#727272</color>
+
+    <color name="albumAccent">#84ceca</color>
+    <color name="albumSecondary">#727272</color>
+    <color name="albumRatedStar">#ffeb5a</color>
+    <color name="albumFabRipple">#51b2ac</color>
+
+    <color name="mainColor">#222831</color>
+    <color name="lineColor">#dddddd</color>
+    <color name="imageBgColor">#F7F7F7</color>
+    <color name="blackColor">#000000</color>
+    <color name="blackColor1">#111111</color>
+    <color name="blackColor3">#333333</color>
+    <color name="blackColor4">#444444</color>
+    <color name="blackColor5">#555555</color>
+    <color name="grayColor">#727272</color>
+    <color name="whiteColor">#FFFFFF</color>
+    <color name="whiteColor_E">#EEEEEE</color>
+
+    <color name="yellowColor">#f1ca17</color>
+    
+    <color name="mantleColor">#33000000</color>
+
+<!--    <color name="topBoxColor">#03A9F4</color>-->
+    <color name="uploadBtnColor">#448AFF</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="color1">#e2e1e4</color>
+    <color name="color2">#e3b4b8</color>
+    <color name="color3">#8076a3</color>
+    <color name="color4">#61649f</color>
+    <color name="color5">#2376b7</color>
+    <color name="color6">#5dbe8a</color>
+    <color name="color7">#96c24e</color>
+    <color name="color8">#fed71a</color>
+    <color name="color9">#ff9900</color>
+    <color name="text_color">#444444</color>
+    <color name="black">#000000</color>
+</resources>

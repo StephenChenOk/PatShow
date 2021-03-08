@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <View
+        android:layout_width="2dp"
+        android:layout_height="1dp" />
+
+    <ImageView
+        android:id="@+id/iv_mapping"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#E7EBF6"
+        android:padding="15dp"
+        android:src="@drawable/star" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="1dp" />
+</LinearLayout>
