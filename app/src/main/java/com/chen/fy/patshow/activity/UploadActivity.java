@@ -5,20 +5,24 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.bumptech.glide.Glide;
-import com.chen.fy.patshow.interfaces.PicturesItemClickListener;
 import com.chen.fy.patshow.R;
 import com.chen.fy.patshow.model.IdentifyResponse;
 import com.chen.fy.patshow.network.IdentifyService;
 import com.chen.fy.patshow.network.ServiceCreator;
 import com.chen.fy.patshow.util.RUtil;
-import com.chen.fy.patshow.util.UiUtils;
+import com.chen.fy.patshow.util.ShowUtils;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
+
 import java.io.File;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -26,7 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UploadActivity extends AppCompatActivity implements View.OnClickListener {
+public class UploadActivity extends AppCompatActivity {
 
     private ImageView ivPhoto;
     private final String TAG = "UploadActivity";
@@ -37,7 +41,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.upload_layout);
 
-        UiUtils.changeStatusBarTextImgColor(this, false);
+        ShowUtils.changeStatusBarTextImgColor(this, false);
 
         initView();
         initData();
@@ -45,9 +49,9 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
     private void initView() {
         ivPhoto = findViewById(R.id.iv_photo_upload);
-        ivPhoto.setOnClickListener(this);
-        findViewById(R.id.iv_return_upload).setOnClickListener(this);
-        findViewById(R.id.btn_upload).setOnClickListener(this);
+        ivPhoto.setOnClickListener(v -> ShowUtils.zoomPicture(this, v, mPhotoPath));
+        findViewById(R.id.iv_return_upload).setOnClickListener(v -> finish());
+        findViewById(R.id.btn_upload).setOnClickListener(v -> startUpload());
     }
 
     private void initData() {
@@ -56,22 +60,6 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
             Glide.with(this).load(mPhotoPath).into(ivPhoto);
         }
 
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.iv_photo_upload:
-                PicturesItemClickListener listener = new PicturesItemClickListener();
-                listener.onPicturesItemClick(ivPhoto, mPhotoPath);
-                break;
-            case R.id.iv_return_upload:
-                finish();
-                break;
-            case R.id.btn_upload:
-                startUpload();
-                break;
-        }
     }
 
     //上传图片
@@ -93,7 +81,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 IdentifyResponse response1 = response.body();
                 if (response1 != null) {
                     String name = response1.getName();
-                    identifySuccess(name);
+                    identifyDone(name);
                 } else {
                     Log.e(TAG, "identify response is null");
                 }
@@ -108,10 +96,14 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         });
     }
 
-    private void identifySuccess(String name) {
+    private void identifyDone(String name) {
+        if (name.equals(getResources().getString(R.string.identify_error))) {
+            Toast.makeText(this,"识别失败，请重新进行",Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent intent = new Intent(this, SuccessIdentifyActivity.class);
         intent.putExtra(RUtil.toString(R.string.photo_path), mPhotoPath);
-        intent.putExtra(RUtil.toString(R.string.server_back),name);
+        intent.putExtra(RUtil.toString(R.string.server_back), name);
         startActivity(intent);
     }
 }

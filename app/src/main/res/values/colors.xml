@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimary">#e3b4b8</color>
+    <color name="colorPrimaryDark">#e3b4b8</color>
     <color name="colorAccent">#D81B60</color>
 
     <color name="grayIconTint">#727272</color>
@@ -14,24 +14,28 @@
     <color name="mainColor">#222831</color>
     <color name="lineColor">#dddddd</color>
     <color name="imageBgColor">#F7F7F7</color>
-    <color name="blackColor">#000000</color>
-    <color name="blackColor1">#111111</color>
+    <color name="blackColor">#090909</color>
+    <color name="blackColor1">#131313</color>
+    <color name="blackColor2">#2C2C2C</color>
     <color name="blackColor3">#333333</color>
     <color name="blackColor4">#444444</color>
     <color name="blackColor5">#555555</color>
     <color name="grayColor">#727272</color>
-    <color name="whiteColor">#FFFFFF</color>
+    <color name="grayColor_D">#D2D2D2</color>
+    <color name="whiteColor">#FCFCFC</color>
     <color name="whiteColor_E">#EEEEEE</color>
+    <color name="whiteColor_info_bg">#F6F7F9</color>
 
-    <color name="yellowColor">#f1ca17</color>
-    
-    <color name="mantleColor">#33000000</color>
+    <color name="yellowColor">#FFCE16</color>
+    <color name="yellowColor_publish">#FED71A</color>
+
+    <color name="mantleColor">#88000000</color>
 
 <!--    <color name="topBoxColor">#03A9F4</color>-->
     <color name="uploadBtnColor">#448AFF</color>
 
     <color name="transparent">#00000000</color>
-    <color name="color1">#e2e1e4</color>
+    <color name="color1">#FFFFFF</color>
     <color name="color2">#e3b4b8</color>
     <color name="color3">#8076a3</color>
     <color name="color4">#61649f</color>
@@ -42,4 +46,11 @@
     <color name="color9">#ff9900</color>
     <color name="text_color">#444444</color>
     <color name="black">#000000</color>
+    <color name="blueColor">#4E97FF</color>
+    <color name="color11">#FF5057</color>
+    <color name="color12">#3D3D3D</color>
+    <color name="color13">#FF6A56</color>
+    <color name="color14">#FE8832</color>
+    <color name="color15">#FACD34</color>
+    <color name="color16">#DEAA45</color>
 </resources>

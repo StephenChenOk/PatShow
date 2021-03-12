@@ -7,8 +7,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@color/mainColor">
+        android:background="@color/mainColor"
+        android:layout_height="80dp">
 
         <ImageView
             android:id="@+id/iv_return_upload"
@@ -37,10 +37,8 @@
         <ImageView
             android:id="@+id/iv_photo_upload"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/pxt_jpg"
+            android:layout_height="520dp"
+            android:src="@drawable/xbs_jpg"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -49,8 +47,8 @@
 
         <Button
             android:id="@+id/btn_upload"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
             android:layout_centerVertical="true"
             android:layout_margin="50dp"
             android:background="@drawable/btn_upload"

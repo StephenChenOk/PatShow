@@ -224,10 +224,10 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/corner_box_bg"
+                android:background="@drawable/publish_box_bg"
                 android:drawableStart="@drawable/ic_add_black_24dp"
                 android:text="发布"
-                android:textColor="@color/blackColor"
+                android:textColor="@color/black"
                 android:textSize="15sp" />
         </RelativeLayout>
 

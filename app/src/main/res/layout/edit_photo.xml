@@ -18,8 +18,7 @@
             <TextView
                 android:id="@+id/tv_cancel_edit"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_height="match_parent"
                 android:padding="15dp"
                 android:text="取消"
                 android:textColor="@color/whiteColor"
@@ -28,13 +27,23 @@
             <TextView
                 android:id="@+id/tv_save_edit"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
                 android:padding="15dp"
                 android:text="保存"
-                android:textColor="#444444"
+                android:textColor="@color/blackColor4"
                 android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/tv_type_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="15dp"
+                android:background="@color/black"
+                android:textColor="@color/whiteColor"
+                android:textSize="17sp"
+                android:visibility="gone"/>
 
         </RelativeLayout>
 
@@ -66,12 +75,12 @@
                     android:layout_height="wrap_content"
                     android:layout="@layout/img_mark" />
 
-                <com.chen.fy.patshow.view.MantleView
+                <View
                     android:id="@+id/mantle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/mantleColor"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
             </RelativeLayout>
 
@@ -83,7 +92,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="180dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -99,7 +108,7 @@
                 <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@drawable/logo_bg"
+                    android:background="@drawable/edit_logo_bg"
                     android:padding="15dp"
                     android:src="@drawable/ic_text_fields_white_32dp" />
 
@@ -127,7 +136,7 @@
                 <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@drawable/logo_bg"
+                    android:background="@drawable/edit_logo_bg"
                     android:padding="15dp"
                     android:src="@drawable/ic_pages_white_32dp" />
 
@@ -155,7 +164,8 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/text_bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="515dp"
+        android:layout_height="230dp"
+        android:background="@android:color/white"
         app:behavior_hideable="true"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
@@ -167,9 +177,23 @@
     </androidx.core.widget.NestedScrollView>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/text_input_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="520dp"
+        app:behavior_hideable="true"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <include
+            layout="@layout/text_input_bottom_popup_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/mapping_bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="515dp"
+        android:layout_height="250dp"
         android:background="@android:color/white"
         app:behavior_hideable="true"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">

@@ -2,159 +2,77 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/black"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:padding="10dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_color"
+        <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="景点"
+            android:textColor="@color/whiteColor"
+            android:textSize="17sp" />
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="文艺"
+            android:textColor="@color/whiteColor"
+            android:textSize="17sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="节日"
+            android:textColor="@color/whiteColor"
+            android:textSize="17sp" />
+
+        <Space
+            android:layout_width="160dp"
+            android:layout_height="1dp" />
     </LinearLayout>
 
-    <LinearLayout
+    <Space
+        android:layout_width="1dp"
+        android:layout_height="20dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_text_logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blackColor"
-        android:orientation="vertical">
+        android:orientation="horizontal" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <ImageView
+            android:id="@+id/iv_cancel_text"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+            android:src="@drawable/ic_close_white_32dp" />
 
-            <EditText
-                android:id="@+id/et_input"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/corner_box_bg"
-                android:gravity="center_vertical"
-                android:hint="点击输入文字"
-                android:textColor="@color/whiteColor_E"
-                android:padding="15dp"
-                android:textColorHint="@color/whiteColor_E"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:id="@+id/iv_define"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/ic_check_white_28dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <!-- 键盘 -->
-            <LinearLayout
-                android:id="@+id/ll_keyboard_box"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_keyboard_white_28dp" />
-
-                <View
-                    android:layout_width="3dp"
-                    android:layout_height="1dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="键盘"
-                    android:textColor="@color/whiteColor"
-                    android:textSize="17sp" />
-            </LinearLayout>
-
-            <!-- 样式 -->
-            <LinearLayout
-                android:id="@+id/ll_style_box"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_text_format_white_28dp" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="1dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="样式"
-                    android:textColor="@color/whiteColor"
-                    android:textSize="17sp" />
-            </LinearLayout>
-
-            <!-- 字体 -->
-            <LinearLayout
-                android:id="@+id/ll_typeface_box"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_title_white_28dp" />
-
-                <View
-                    android:layout_width="2dp"
-                    android:layout_height="1dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="字体"
-                    android:textColor="@color/whiteColor"
-                    android:textSize="17sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/blackColor5" />
-
-        <ViewStub
-            android:id="@+id/vs_text_style"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/iv_done_text"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout="@layout/vs_text_style" />
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_done_white_32dp" />
+    </RelativeLayout>
 
-        <ViewStub
-            android:id="@+id/vs_text_typeface"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout="@layout/vs_text_typeface" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
 
-    </LinearLayout>
 </LinearLayout>

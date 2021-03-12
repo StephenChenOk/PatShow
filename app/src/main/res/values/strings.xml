@@ -11,4 +11,9 @@
     <string name="photo_path">photo_path</string>
     <string name="photo_name">photo_name.jpg</string>
     <string name="server_back">serverBack</string>
+
+    <string name="text_type">文字</string>
+    <string name="mapping_type">贴图</string>
+    <string name="empty" />
+    <string name="identify_error">无</string>
 </resources>

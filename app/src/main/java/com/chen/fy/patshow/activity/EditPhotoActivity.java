@@ -20,7 +20,6 @@ import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -29,6 +28,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSeekBar;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,10 +36,10 @@ import com.bumptech.glide.Glide;
 import com.chen.fy.patshow.R;
 import com.chen.fy.patshow.adapter.ColorAdapter;
 import com.chen.fy.patshow.adapter.MappingAdapter;
+import com.chen.fy.patshow.adapter.TextLogoAdapter;
 import com.chen.fy.patshow.util.EditorUtil;
 import com.chen.fy.patshow.util.RUtil;
-import com.chen.fy.patshow.util.UiUtils;
-import com.chen.fy.patshow.view.MantleView;
+import com.chen.fy.patshow.util.ShowUtils;
 import com.chen.fy.patshow.view.QFRelativeLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
@@ -53,14 +53,18 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
     /// 图片路径
     private String mPhotoPath;
 
-    /// 最外层Box
-    private LinearLayout rlMainBox;
+    /// 当前编辑状态：文字/贴纸
+    private TextView tvType;
+    /// 保存按钮
+    private TextView tvSave;
     /// 要编辑的图片外层Box
     private RelativeLayout rlImgBox;
     /// 要编辑的图片
     private ImageView ivImage;
     /// text bottom sheet
     private BottomSheetBehavior mTextBottomSheetBehavior;
+    /// text input bottom sheet
+    private BottomSheetBehavior mTextInputBottomSheetBehavior;
     /// 输入文字框
     private EditText etInput;
     /// 样式
@@ -87,10 +91,10 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
     /// 是否已经是斜体
     private boolean isItalics = false;
 
-    /// 判断是否需要显示蒙层
-    private boolean isMantleShow = false;
     /// 蒙层
-    private MantleView mMantleView;
+    private View mMantleView;
+    /// 透明View, 实现点击蒙层效果
+    private View transparentView;
 
     private void showMantle(boolean isShow) {
         if (mMantleView == null) {
@@ -100,19 +104,12 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
             float imgH = ivImage.getHeight();
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams((int) imgW, (int) imgH);
             mMantleView.setLayoutParams(params);
-            mMantleView.setMantleClickListener(() -> {
-                if (isMantleShow) {
-                    showMantle(false);
-                }
-                hideSoftInputFromWindow(etInput);
-            });
         }
         if (isShow) {
             mMantleView.setVisibility(View.VISIBLE);
-            isMantleShow = true;
+            tvType.setText(getResources().getString(R.string.empty));
         } else {
             mMantleView.setVisibility(View.GONE);
-            isMantleShow = false;
         }
     }
 
@@ -123,7 +120,7 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         //隐藏状态栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        UiUtils.changeStatusBarTextImgColor(this, true);
+        ShowUtils.changeStatusBarTextImgColor(this, true);
         setContentView(R.layout.edit_photo);
         bindView();
         //initData();
@@ -131,33 +128,55 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onBackPressed() {
-        if (mTextBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+        if (mTextInputBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            // text input
+            mTextInputBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            showMantle(false);
+            tvType.setText(getResources().getString(R.string.text_type));
+        } else if (mTextBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            // text
             mTextBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            showMantle(false);
+            tvType.setVisibility(View.GONE);
         } else if (mMappingBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            // mapping
             mMappingBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            showMantle(false);
+            tvType.setVisibility(View.GONE);
         } else {
             super.onBackPressed();
         }
     }
 
     private void bindView() {
-        rlMainBox = findViewById(R.id.rl_main_box);
+        tvType = findViewById(R.id.tv_type_edit);
         rlImgBox = findViewById(R.id.rl_img_box);
         ivImage = findViewById(R.id.iv_image_edit);
-        findViewById(R.id.ll_text_box).setOnClickListener(this);
-        findViewById(R.id.ll_mapping_box).setOnClickListener(this);
+        findViewById(R.id.ll_text_box).setOnClickListener(v -> {
+            addTextView();
+            tvType.setText(getResources().getString(R.string.text_type));
+            tvType.setVisibility(View.VISIBLE);
+        });
+        findViewById(R.id.ll_mapping_box).setOnClickListener(v -> {
+            mMappingBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            tvType.setText(getResources().getString(R.string.mapping_type));
+            tvType.setVisibility(View.VISIBLE);
+        });
         findViewById(R.id.tv_cancel_edit).setOnClickListener(v -> {
+            tvSave.setClickable(false);
+            tvSave.setTextColor(getResources().getColor(R.color.blackColor4));
             rlImgBox.removeAllViews();
             rlImgBox.addView(ivImage);
         });
-        // 保存照片到相册
-        findViewById(R.id.tv_save_edit).setOnClickListener(v -> {
+        // 保存按钮初始化
+        tvSave = findViewById(R.id.tv_save_edit);
+        tvSave.setOnClickListener(v -> {
+            // 保存照片到相册
             Bitmap bitmap = createBitmap(rlImgBox);
             saveImageToGallery(EditPhotoActivity.this, bitmap);
         });
+        tvSave.setClickable(false);
+
         bindTextBottomSheet();
+        bindTextInputBottomSheet();
         bindMappingBottomSheet();
     }
 
@@ -170,7 +189,6 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
             String name = getIntent().getStringExtra(RUtil.toString(R.string.server_back));
             //addImgMark(name);
         }
-
     }
 
     private void addImgMark(String name) {
@@ -187,40 +205,74 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    // 文本水印界面
+    // 文本界面
     private void bindTextBottomSheet() {
+        findViewById(R.id.iv_cancel_text).setOnClickListener(v -> {
+            tvType.setVisibility(View.GONE);
+            rlImgBox.removeView(mTextBox);
+            mTextBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        });
+        findViewById(R.id.iv_done_text).setOnClickListener(v -> {
+            tvType.setVisibility(View.GONE);
+            mTextBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            textDefine();
+            tvSave.setClickable(true);
+            tvSave.setTextColor(getResources().getColor(R.color.whiteColor));
+        });
+
+        View bottomSheet = findViewById(R.id.text_bottom_sheet);
+        mTextBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        // RecyclerView
+        RecyclerView rvTextLogo = findViewById(R.id.rv_text_logo);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        rvTextLogo.setLayoutManager(layoutManager);
+        TextLogoAdapter adapter = new TextLogoAdapter(EditorUtil.getTextLogoDrawables(), position -> {
+            addMapping(EditorUtil.getTextLogoDrawables().get(position));
+        });
+        rvTextLogo.setAdapter(adapter);
+        // 隐藏
+        mTextBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
+
+    // 文本输入界面
+    private void bindTextInputBottomSheet() {
         etInput = findViewById(R.id.et_input);
         etInput.addTextChangedListener(this);
         findViewById(R.id.ll_keyboard_box).setOnClickListener(this);
         findViewById(R.id.ll_style_box).setOnClickListener(this);
         findViewById(R.id.ll_typeface_box).setOnClickListener(this);
-        findViewById(R.id.iv_define).setOnClickListener(this);
-        View bottomSheet = findViewById(R.id.text_bottom_sheet);
-        mTextBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        findViewById(R.id.iv_define).setOnClickListener(v -> {
+            tvType.setVisibility(View.GONE);
+            //textDefine();
+            resetText();
+        });
+        View bottomSheet = findViewById(R.id.text_input_bottom_sheet);
+        mTextInputBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
-        mTextBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        mTextInputBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
         bindViewStub();
     }
 
     /// 贴图界面
     private void bindMappingBottomSheet() {
-        findViewById(R.id.iv_cancel_mapping).setOnClickListener(this);
-        findViewById(R.id.iv_done_mapping).setOnClickListener(this);
-        // 历史
-        findViewById(R.id.iv_history).setOnClickListener(v -> {
+        findViewById(R.id.iv_cancel_mapping).setOnClickListener(v -> {
+            tvType.setVisibility(View.GONE);
+            rlImgBox.removeView(ivMapping);
+            mMappingBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         });
-        // 装饰
-        findViewById(R.id.tv_decorate).setOnClickListener(v -> {
-        });
-        // 文字
-        findViewById(R.id.tv_words).setOnClickListener(v -> {
+        findViewById(R.id.iv_done_mapping).setOnClickListener(v -> {
+            tvType.setVisibility(View.GONE);
+            mappingDefine();
+            tvSave.setClickable(true);
+            tvSave.setTextColor(getResources().getColor(R.color.whiteColor));
         });
         // RecyclerView
         RecyclerView rvMapping = findViewById(R.id.rv_mapping);
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        rvMapping.setLayoutManager(manager);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        rvMapping.setLayoutManager(layoutManager);
         MappingAdapter adapter = new MappingAdapter(EditorUtil.getMappingDrawables(), position -> {
             addMapping(EditorUtil.getMappingDrawables().get(position));
         });
@@ -252,6 +304,7 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
         ColorAdapter adapter = new ColorAdapter(EditorUtil.getColorDrawables(), position -> {
             int colorID = EditorUtil.getColorID(position);
             tvText.setTextColor(getResources().getColor(colorID));
+            tvText.setText(tvText.getText().toString());
         });
         rvColor.setAdapter(adapter);
 
@@ -316,23 +369,6 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
                 vsTypeface.setVisibility(View.VISIBLE);
                 hideSoftInputFromWindow(etInput);
                 break;
-            case R.id.iv_define:
-                textDefine();
-                break;
-            case R.id.ll_text_box:
-                addTextView();
-                break;
-            case R.id.ll_mapping_box:
-                mMappingBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                break;
-            case R.id.iv_cancel_mapping:
-                // 取消贴图
-                rlImgBox.removeView(ivMapping);
-                mMappingBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-                break;
-            case R.id.iv_done_mapping:
-                mappingDefine();
-                break;
             case R.id.rl_bold_box:
                 // 加粗
                 if (isItalics) {
@@ -380,13 +416,15 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
         mTextBox.setOnTouchListener(null);
         tvText.setOnClickListener(null);  //移除监听
         tvText.setBackgroundResource(0);  //移除背景
-        mTextBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        mTextInputBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         hideSoftInputFromWindow(etInput);
     }
 
     /// 贴图，点击确定
     private void mappingDefine() {
-        mMappingBox.setOnTouchListener(null);
+        if (mMappingBox != null) {
+            mMappingBox.setOnTouchListener(null);
+        }
         mMappingBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
@@ -413,10 +451,22 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
         tvText.setTextSize(20);
         tvText.setLayoutParams(textParams);
         tvText.setOnClickListener(v -> {
+            // 添加透明View，可点击
+            transparentView = new View(this);
+            transparentView.setLayoutParams(params);
+            transparentView.setOnClickListener(v_ -> {
+                tvType.setVisibility(View.GONE);
+                resetText();
+                // 添加背景
+                tvText.setBackground(getResources().getDrawable(R.drawable.text_box));
+            });
+            rlImgBox.addView(transparentView);
+            // 消除背景
+            tvText.setBackgroundResource(0);
             // Text上移
-            ViewMoveUp(tvText);
+            viewMove(tvText, 0, 0, 0, -1);
             // 弹出底部栏
-            mTextBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            mTextInputBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             // 覆盖蒙层
             showMantle(true);
         });
@@ -424,6 +474,8 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
         mTextBox.addView(tvText);
         // QFRelativeLayout 添加到 box
         rlImgBox.addView(mTextBox);
+        // 显示text bottom view
+        mTextBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     /// 添加贴图
@@ -435,10 +487,13 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
         float imgH = ivImage.getHeight();
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams((int) imgW, (int) imgH);
         mMappingBox.setLayoutParams(params);
-        mMappingBox.setGravity(Gravity.CENTER_HORIZONTAL);
+        mMappingBox.setGravity(Gravity.CENTER);
         // image
         ivMapping = new ImageView(this);
-        ivMapping.setScaleType(ImageView.ScaleType.MATRIX);
+        RelativeLayout.LayoutParams mappingParams = new RelativeLayout.LayoutParams(
+                (int) RelativeLayout.LayoutParams.WRAP_CONTENT, (int) imgH/2);
+        ivMapping.setLayoutParams(mappingParams);
+
         ivMapping.setImageResource(mappingID);
         // image 添加到 QFRelativeLayout
         mMappingBox.addView(ivMapping);
@@ -446,25 +501,30 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
         rlImgBox.addView(mMappingBox);
     }
 
-    /// 视图上移
-    private void ViewMoveUp(View view) {
+    /// 视图移动
+    private void viewMove(View view, float fromX, float toX, float fromY, float toY) {
         Animation translateAnimation = new TranslateAnimation(
-                Animation.RELATIVE_TO_SELF, 0,
-                Animation.RELATIVE_TO_SELF, 0,
-                Animation.RELATIVE_TO_SELF, 0,
-                Animation.RELATIVE_TO_SELF, -1f);//设置平移的起点和终点
+                Animation.RELATIVE_TO_SELF, fromX,
+                Animation.RELATIVE_TO_SELF, toX,
+                Animation.RELATIVE_TO_SELF, fromY,
+                Animation.RELATIVE_TO_SELF, toY);//设置平移的起点和终点
         translateAnimation.setDuration(500);
         translateAnimation.setFillEnabled(true);//使其可以填充效果从而不回到原地
         translateAnimation.setFillAfter(true);//不回到起始位置
         //如果不添加setFillEnabled和setFillAfter则动画执行结束后会自动回到远点
         view.startAnimation(translateAnimation);//给imageView添加的动画效果
-
-
     }
 
-    /// 图片下移
-    private void ViewMoveDown() {
-
+    /// 重置TextBox
+    private void resetText() {
+        // 移除遮挡View
+        rlImgBox.removeView(transparentView);
+        // 隐藏底部栏
+        mTextInputBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        // 视图下移
+        viewMove(tvText, 0, 0, -1, 0);
+        // 删除蒙层
+        showMantle(false);
     }
 
     /// EditView输入监听

@@ -4,7 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,9 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.chen.fy.patshow.R;
-import com.chen.fy.patshow.interfaces.OnHomeItemClickListener;
 import com.chen.fy.patshow.model.HomeItem;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.interfaces.XPopupImageLoader;
 
+import java.io.File;
 import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
@@ -23,7 +27,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private int mResourceId;
 
     private List<HomeItem> mList;
-    private OnHomeItemClickListener mClickListener;
+    private IOnHomeItemClickListener mClickListener;
 
     public HomeAdapter(Context context, int resourceId) {
         this.mContext = context;
@@ -34,7 +38,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         this.mList = list;
     }
 
-    public void setOnItemClickListener(OnHomeItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(IOnHomeItemClickListener onItemClickListener) {
         this.mClickListener = onItemClickListener;
     }
 
@@ -52,9 +56,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         Glide.with(mContext).load(item.getImageID()).into(holder.ivImage);
         holder.tvContent.setText(item.getContent());
 
-        if (mClickListener != null) {
-            mClickListener.clickHomeItem(position);
-        }
+        holder.ivImage.setOnClickListener(v -> {
+            if (mClickListener != null) {
+                mClickListener.clickHomeItem(holder.ivImage, item.getImageID());
+            }
+        });
     }
 
     @Override
@@ -72,5 +78,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             ivImage = itemView.findViewById(R.id.iv_img_home_item);
             tvContent = itemView.findViewById(R.id.tv_content_home_item);
         }
+    }
+
+    public interface IOnHomeItemClickListener {
+        void clickHomeItem(ImageView imageView, Object url);
     }
 }

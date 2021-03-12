@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="5dp"/>
+
+        <View
+            android:layout_width="45dp"
+            android:layout_height="10dp"
+            android:background="@drawable/top_logo_bottom_popup"
+            android:layout_gravity="center"/>
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="5dp"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/xbs_main" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/info_bg"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="5dp"
+                android:text="桂林"
+                android:textColor="@color/blueColor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/info_bg"
+                android:drawableLeft="@drawable/ic_location_on_blue_16dp"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="5dp"
+                android:text="象鼻山"
+                android:textColor="@color/blueColor" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="15sp"
+            android:textColor="@color/text_color"
+            android:text="@string/xbs_info"/>
+
+    </LinearLayout>
+
+
+</androidx.core.widget.NestedScrollView>

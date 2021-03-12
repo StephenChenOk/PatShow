@@ -2,6 +2,7 @@
 <resources>
     <dimen name="grid_expected_size">120dp</dimen>
     <dimen name="cardCornerRadius">7dp</dimen>
+    <dimen name="colorSize">28dp</dimen>
 
     <!--这个值决定DigitalThumbSeekBar的滑块的大小即SeekBar高度-->
     <dimen name="seekbarThumbSize">30dp</dimen>
