@@ -52,7 +52,6 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
 
     /// 图片路径
     private String mPhotoPath;
-
     /// 当前编辑状态：文字/贴纸
     private TextView tvType;
     /// 保存按钮
@@ -73,10 +72,8 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
     private ViewStub vsTypeface;
     // mapping bottom sheet
     private BottomSheetBehavior mMappingBottomSheetBehavior;
-
     /// 标志： 象鼻山、普贤塔
     private ViewStub vsMark;
-
     /// 添加的文字Box
     private QFRelativeLayout mTextBox;
     /// 添加的贴图Box
@@ -85,17 +82,14 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
     private TextView tvText;
     /// 贴图
     private ImageView ivMapping;
-
     /// 是否已经是加粗
     private boolean isBold = false;
     /// 是否已经是斜体
     private boolean isItalics = false;
-
     /// 蒙层
     private View mMantleView;
     /// 透明View, 实现点击蒙层效果
     private View transparentView;
-
     private void showMantle(boolean isShow) {
         if (mMantleView == null) {
             // 初始化
@@ -228,6 +222,7 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvTextLogo.setLayoutManager(layoutManager);
         TextLogoAdapter adapter = new TextLogoAdapter(EditorUtil.getTextLogoDrawables(), position -> {
+            rlImgBox.removeView(mTextBox);
             addMapping(EditorUtil.getTextLogoDrawables().get(position));
         });
         rvTextLogo.setAdapter(adapter);

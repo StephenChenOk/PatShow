@@ -11,17 +11,30 @@
 
         <Space
             android:layout_width="1dp"
-            android:layout_height="5dp"/>
+            android:layout_height="5dp" />
 
         <View
             android:layout_width="45dp"
-            android:layout_height="10dp"
-            android:background="@drawable/top_logo_bottom_popup"
-            android:layout_gravity="center"/>
+            android:layout_height="7dp"
+            android:layout_gravity="center"
+            android:background="@drawable/top_logo_bottom_popup" />
 
         <Space
             android:layout_width="1dp"
-            android:layout_height="5dp"/>
+            android:layout_height="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="景点信息"
+            android:textColor="@color/text_color"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="5dp" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -69,9 +82,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:textSize="15sp"
+            android:text="@string/xbs_info"
             android:textColor="@color/text_color"
-            android:text="@string/xbs_info"/>
+            android:textSize="15sp" />
 
     </LinearLayout>
 

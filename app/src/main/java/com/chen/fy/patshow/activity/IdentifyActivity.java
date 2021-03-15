@@ -30,10 +30,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UploadActivity extends AppCompatActivity {
+public class IdentifyActivity extends AppCompatActivity {
 
     private ImageView ivPhoto;
-    private final String TAG = "UploadActivity";
+    private final String TAG = "IdentifyActivity";
     private String mPhotoPath;
 
     @Override

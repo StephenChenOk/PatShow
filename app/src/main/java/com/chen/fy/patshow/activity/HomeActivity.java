@@ -1,11 +1,11 @@
 package com.chen.fy.patshow.activity;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -24,7 +24,8 @@ import com.chen.fy.patshow.model.HomeItem;
 import com.chen.fy.patshow.util.RUtil;
 import com.chen.fy.patshow.util.ShowUtils;
 import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.interfaces.XPopupImageLoader;
+import com.lxj.xpopup.interfaces.OnConfirmListener;
+import com.lxj.xpopup.interfaces.SimpleCallback;
 
 import org.devio.takephoto.app.TakePhoto;
 import org.devio.takephoto.app.TakePhotoActivity;
@@ -69,6 +70,9 @@ public class HomeActivity extends TakePhotoActivity implements View.OnClickListe
         // 识别按钮
         findViewById(R.id.fab_distinguish).setOnClickListener(this);
 
+        // 上传
+        findViewById(R.id.btn_publish_mine).setOnClickListener(v -> showUploadDialog());
+
         // recyclerView
         RecyclerView recyclerView = findViewById(R.id.rv_home);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
@@ -101,6 +105,11 @@ public class HomeActivity extends TakePhotoActivity implements View.OnClickListe
         mList.add(item6);
         mList.add(item7);
         mList.add(item8);
+    }
+
+    /// 显示上传图片弹窗
+    private void showUploadDialog() {
+
     }
 
     /// 初始化TakePhoto
@@ -147,7 +156,7 @@ public class HomeActivity extends TakePhotoActivity implements View.OnClickListe
     public void takeSuccess(TResult result) {
         super.takeSuccess(result);
 
-        Intent intent = new Intent(this, UploadActivity.class);
+        Intent intent = new Intent(this, IdentifyActivity.class);
         intent.putExtra(RUtil.toString(R.string.photo_path), result.getImage().getOriginalPath());
         startActivity(intent);
     }

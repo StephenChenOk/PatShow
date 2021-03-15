@@ -61,17 +61,16 @@ public class EditorUtil {
     public static List<Integer> getMappingDrawables(){
         if(mappingDrawables == null) {
             mappingDrawables = new ArrayList<>();
+            mappingDrawables.add(R.drawable.mapping_7);
+            mappingDrawables.add(R.drawable.mapping_8);
+            mappingDrawables.add(R.drawable.mapping_1);
+            mappingDrawables.add(R.drawable.mapping_2);
+            mappingDrawables.add(R.drawable.mapping_3);
+            mappingDrawables.add(R.drawable.mapping_4);
+            mappingDrawables.add(R.drawable.mapping_5);
+            mappingDrawables.add(R.drawable.mapping_6);
             mappingDrawables.add(R.drawable.star);
-            mappingDrawables.add(R.drawable.snow);
-            mappingDrawables.add(R.drawable.star);
-            mappingDrawables.add(R.drawable.snow);
-            mappingDrawables.add(R.drawable.star);
-            mappingDrawables.add(R.drawable.snow);
-            mappingDrawables.add(R.drawable.star);
-            mappingDrawables.add(R.drawable.snow);
-            mappingDrawables.add(R.drawable.star);
-            mappingDrawables.add(R.drawable.snow);
-            mappingDrawables.add(R.drawable.star);
+
             mappingDrawables.add(R.drawable.snow);
         }
         return mappingDrawables;
@@ -85,6 +84,8 @@ public class EditorUtil {
             textLogoDrawables.add(R.drawable.xbs_logo_white);
             textLogoDrawables.add(R.drawable.pxt_logo_black);
             textLogoDrawables.add(R.drawable.pxt_logo_white);
+            textLogoDrawables.add(R.drawable.wenyi_1);
+            textLogoDrawables.add(R.drawable.wenyi_2);
         }
         return textLogoDrawables;
     }

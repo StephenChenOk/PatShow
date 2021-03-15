@@ -33,14 +33,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.UploadActivity"
+            android:name=".activity.IdentifyActivity"
             android:theme="@style/MyTheme" />
         <activity
             android:name=".activity.SuccessIdentifyActivity"
             android:theme="@style/MyTheme" />
-<!--        <activity-->
-<!--            android:name=".activity.EditPhotoActivity"-->
-<!--            android:theme="@style/MyTheme" />-->
+        <activity
+            android:name=".activity.EditPhotoActivity"
+            android:theme="@style/MyTheme" />
         <provider
             android:name="cn.bmob.v3.util.BmobContentProvider"
             android:authorities="com.chen.fy.patshow.BmobContentProvider"></provider>
