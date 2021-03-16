@@ -22,6 +22,7 @@
     <color name="blackColor5">#555555</color>
     <color name="grayColor">#727272</color>
     <color name="grayColor_D">#D2D2D2</color>
+    <color name="grayColor_E">#E2E2E2</color>
     <color name="whiteColor">#FCFCFC</color>
     <color name="whiteColor_E">#EEEEEE</color>
     <color name="whiteColor_info_bg">#F6F7F9</color>

@@ -3,7 +3,6 @@ package com.chen.fy.patshow.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -14,8 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.chen.fy.patshow.R;
 import com.chen.fy.patshow.model.IdentifyResponse;
-import com.chen.fy.patshow.network.IdentifyService;
-import com.chen.fy.patshow.network.ServiceCreator;
+import com.chen.fy.patshow.network.interfaces.IdentifyService;
+import com.chen.fy.patshow.network.IdentifyServiceCreator;
 import com.chen.fy.patshow.util.RUtil;
 import com.chen.fy.patshow.util.ShowUtils;
 import com.lxj.xpopup.XPopup;
@@ -39,7 +38,7 @@ public class IdentifyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.upload_layout);
+        setContentView(R.layout.identify_layout);
 
         ShowUtils.changeStatusBarTextImgColor(this, false);
 
@@ -48,10 +47,10 @@ public class IdentifyActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        ivPhoto = findViewById(R.id.iv_photo_upload);
+        ivPhoto = findViewById(R.id.iv_photo_identify);
         ivPhoto.setOnClickListener(v -> ShowUtils.zoomPicture(this, v, mPhotoPath));
-        findViewById(R.id.iv_return_upload).setOnClickListener(v -> finish());
-        findViewById(R.id.btn_upload).setOnClickListener(v -> startUpload());
+        findViewById(R.id.iv_return_identify).setOnClickListener(v -> finish());
+        findViewById(R.id.btn_identify).setOnClickListener(v -> startIdentify());
     }
 
     private void initData() {
@@ -63,17 +62,17 @@ public class IdentifyActivity extends AppCompatActivity {
     }
 
     //上传图片
-    private void startUpload() {
+    private void startIdentify() {
 
         final BasePopupView loading = new XPopup.Builder(this)
-                .asLoading("正在上传中")
+                .asLoading("识别中...")
                 .show();
         loading.setOnTouchListener((v, event) -> true);
 
         RequestBody file = RequestBody.create(MediaType.parse("image/jpg"), new File(mPhotoPath));
         MultipartBody.Part filePart = MultipartBody.Part.createFormData("img"
                 , RUtil.toString(R.string.photo_name), file);
-        IdentifyService photoService = ServiceCreator.create(IdentifyService.class);
+        IdentifyService photoService = IdentifyServiceCreator.create(IdentifyService.class);
         photoService.postPhoto(filePart).enqueue(new Callback<IdentifyResponse>() {
             @Override
             public void onResponse(@NonNull Call<IdentifyResponse> call
@@ -98,7 +97,7 @@ public class IdentifyActivity extends AppCompatActivity {
 
     private void identifyDone(String name) {
         if (name.equals(getResources().getString(R.string.identify_error))) {
-            Toast.makeText(this,"识别失败，请重新进行",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "识别失败，请重新进行", Toast.LENGTH_SHORT).show();
             return;
         }
         Intent intent = new Intent(this, SuccessIdentifyActivity.class);

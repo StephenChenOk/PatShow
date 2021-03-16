@@ -37,7 +37,7 @@ public class SuccessIdentifyActivity extends AppCompatActivity {
         setContentView(R.layout.success_identify_layout);
 
         bindView();
-        //initData();
+        initData();
     }
 
     private void bindView() {

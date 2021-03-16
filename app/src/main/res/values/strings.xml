@@ -9,6 +9,7 @@
 
     <string name="error_gif">x or y bound size should be at least %1$dpx and file size should be no more than %2$sM</string>
     <string name="photo_path">photo_path</string>
+    <string name="upload_result">upload_result</string>
     <string name="photo_name">photo_name.jpg</string>
     <string name="server_back">serverBack</string>
 

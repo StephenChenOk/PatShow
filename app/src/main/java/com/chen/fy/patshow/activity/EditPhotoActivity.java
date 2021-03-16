@@ -117,7 +117,7 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
         ShowUtils.changeStatusBarTextImgColor(this, true);
         setContentView(R.layout.edit_photo);
         bindView();
-        //initData();
+        initData();
     }
 
     @Override
@@ -176,8 +176,6 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
 
     private void initData() {
         if (getIntent() != null) {
-            mPhotoPath = getIntent().getStringExtra(RUtil.toString(R.string.photo_path));
-            Glide.with(this).load(mPhotoPath).into(ivImage);
             mPhotoPath = getIntent().getStringExtra(RUtil.toString(R.string.photo_path));
             Glide.with(this).load(mPhotoPath).into(ivImage);
             String name = getIntent().getStringExtra(RUtil.toString(R.string.server_back));

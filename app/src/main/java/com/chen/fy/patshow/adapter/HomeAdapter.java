@@ -4,9 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,11 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.chen.fy.patshow.R;
-import com.chen.fy.patshow.model.HomeItem;
-import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.interfaces.XPopupImageLoader;
+import com.chen.fy.patshow.model.ShareResponse;
 
-import java.io.File;
 import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
@@ -26,7 +21,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private Context mContext;
     private int mResourceId;
 
-    private List<HomeItem> mList;
+    private List<ShareResponse> mList;
     private IOnHomeItemClickListener mClickListener;
 
     public HomeAdapter(Context context, int resourceId) {
@@ -34,7 +29,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         this.mResourceId = resourceId;
     }
 
-    public void setHomeList(List<HomeItem> list) {
+    public void setShareResponseList(List<ShareResponse> list) {
         this.mList = list;
     }
 
@@ -52,13 +47,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        HomeItem item = mList.get(position);
-        Glide.with(mContext).load(item.getImageID()).into(holder.ivImage);
-        holder.tvContent.setText(item.getContent());
+        ShareResponse shareResponse = mList.get(position);
+        Glide.with(mContext).load(shareResponse.getImgURL()).into(holder.ivImage);
+        holder.tvContent.setText(shareResponse.getContent());
 
         holder.ivImage.setOnClickListener(v -> {
             if (mClickListener != null) {
-                mClickListener.clickHomeItem(holder.ivImage, item.getImageID());
+                mClickListener.clickHomeItem(holder.ivImage, shareResponse.getImgURL());
             }
         });
     }

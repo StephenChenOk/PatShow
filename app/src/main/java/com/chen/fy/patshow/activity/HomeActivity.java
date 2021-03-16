@@ -1,15 +1,20 @@
 package com.chen.fy.patshow.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.ComponentActivity;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -20,12 +25,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.chen.fy.patshow.R;
 import com.chen.fy.patshow.adapter.HomeAdapter;
-import com.chen.fy.patshow.model.HomeItem;
+import com.chen.fy.patshow.model.ShareResponse;
+import com.chen.fy.patshow.network.interfaces.ShareService;
+import com.chen.fy.patshow.network.ShareServiceCreator;
 import com.chen.fy.patshow.util.RUtil;
 import com.chen.fy.patshow.util.ShowUtils;
 import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.interfaces.OnConfirmListener;
-import com.lxj.xpopup.interfaces.SimpleCallback;
 
 import org.devio.takephoto.app.TakePhoto;
 import org.devio.takephoto.app.TakePhotoActivity;
@@ -35,15 +40,35 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends TakePhotoActivity implements View.OnClickListener {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class HomeActivity extends TakePhotoActivity {
 
     private static final int REQUEST_CODE = 1;
+    private static final String TAG = "HomeActivity";
+
+    private List<ShareResponse> mList = new ArrayList<>();
 
     private HomeAdapter mAdapter;
-    private List<HomeItem> mList;
 
     private TakePhoto mTakePhoto;
     private Uri mUri;
+
+    /// 上传/识别
+    private boolean isUpload = false;
+
+    /// 是否需要重新获取数据
+    private boolean isGetList = true;
+
+    /// 与TakePhotoActivity造成冲突
+    private ActivityResultLauncher<Intent> uploadLauncher = new ComponentActivity().registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    getList();
+                }
+            });
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +83,10 @@ public class HomeActivity extends TakePhotoActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
+        if (isGetList) {
+            getList();
+        }
+        isGetList = !isGetList;
     }
 
     private void initView() {
@@ -68,10 +97,13 @@ public class HomeActivity extends TakePhotoActivity implements View.OnClickListe
         ivHome.setOnClickListener(v -> ShowUtils.zoomPicture(this, v, R.drawable.xbs_main));
 
         // 识别按钮
-        findViewById(R.id.fab_distinguish).setOnClickListener(this);
+        findViewById(R.id.fab_distinguish).setOnClickListener(v -> openCamera());
 
         // 上传
-        findViewById(R.id.btn_publish_mine).setOnClickListener(v -> showUploadDialog());
+        findViewById(R.id.btn_publish_mine).setOnClickListener(v -> {
+            isUpload = true;
+            mTakePhoto.onPickMultiple(1);
+        });
 
         // recyclerView
         RecyclerView recyclerView = findViewById(R.id.rv_home);
@@ -81,35 +113,8 @@ public class HomeActivity extends TakePhotoActivity implements View.OnClickListe
         mAdapter.setOnItemClickListener((imageView, url) -> ShowUtils.zoomPicture(
                 this, imageView, url
         ));
-        initData();
-        mAdapter.setHomeList(mList);
+        mAdapter.setShareResponseList(mList);
         recyclerView.setAdapter(mAdapter);
-    }
-
-    private void initData() {
-        mList = new ArrayList<>();
-        HomeItem item1 = new HomeItem(R.drawable.xbs_3, "真的好好看，如诗画一般");
-        HomeItem item2 = new HomeItem(R.drawable.pxt_jpg, "普贤塔打卡");
-        HomeItem item3 = new HomeItem(R.drawable.xbs_1, "象鼻山打卡");
-        HomeItem item4 = new HomeItem(R.drawable.xbs_4, "很壮观");
-        HomeItem item5 = new HomeItem(R.drawable.xbs_2, "山水美，很值");
-        HomeItem item6 = new HomeItem(R.drawable.pxt_1, "位于象山顶上，似宝剑");
-        HomeItem item7 = new HomeItem(R.drawable.xbs_6, "远景很不错，一望无际");
-        HomeItem item8 = new HomeItem(R.drawable.xbs_7, "第一次来，很惊艳哦");
-
-        mList.add(item1);
-        mList.add(item2);
-        mList.add(item3);
-        mList.add(item4);
-        mList.add(item5);
-        mList.add(item6);
-        mList.add(item7);
-        mList.add(item8);
-    }
-
-    /// 显示上传图片弹窗
-    private void showUploadDialog() {
-
     }
 
     /// 初始化TakePhoto
@@ -123,15 +128,30 @@ public class HomeActivity extends TakePhotoActivity implements View.OnClickListe
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.fab_distinguish:
-                openCamera();
-                break;
-            default:
-                break;
-        }
+    private void getList() {
+        ShareService shareService = ShareServiceCreator.create(ShareService.class);
+        // 自动开启子线程在后台执行
+        shareService.getList().enqueue(new Callback<List<ShareResponse>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<ShareResponse>> call
+                    , @NonNull Response<List<ShareResponse>> response) {
+                List<ShareResponse> list = response.body();
+                if (list != null) {
+                    Log.i("chensheng", "" + list.size());
+                    mList.clear();
+                    for (int i = list.size() - 1; i >= 0; i--) {
+                        mList.add(list.get(i));
+                    }
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<ShareResponse>> call
+                    , @NonNull Throwable t) {
+                Log.i(TAG, "GetAllShareInfo Failure");
+            }
+        });
     }
 
     /// 图片获取
@@ -141,9 +161,11 @@ public class HomeActivity extends TakePhotoActivity implements View.OnClickListe
                         (position, text) -> {
                             switch (position) {
                                 case 0:         //拍照
+                                    isUpload = false;
                                     mTakePhoto.onPickFromCapture(mUri);
                                     break;
                                 case 1:         //相册
+                                    isUpload = false;
                                     mTakePhoto.onPickMultiple(1);
                                     break;
                             }
@@ -155,12 +177,19 @@ public class HomeActivity extends TakePhotoActivity implements View.OnClickListe
     @Override
     public void takeSuccess(TResult result) {
         super.takeSuccess(result);
-
-        Intent intent = new Intent(this, IdentifyActivity.class);
-        intent.putExtra(RUtil.toString(R.string.photo_path), result.getImage().getOriginalPath());
-        startActivity(intent);
+        String imgPath = result.getImage().getOriginalPath();
+        if (isUpload) {
+            toActivity(UploadActivity.class, imgPath);
+        } else {
+            toActivity(IdentifyActivity.class, imgPath);
+        }
     }
 
+    private void toActivity(Class cls, String imgPath) {
+        Intent intent = new Intent(this, cls);
+        intent.putExtra(RUtil.toString(R.string.photo_path), imgPath);
+        startActivity(intent);
+    }
 
     /// 动态申请危险权限
     private void applyPermission() {
@@ -200,5 +229,6 @@ public class HomeActivity extends TakePhotoActivity implements View.OnClickListe
             default:
         }
     }
+
 }
 
