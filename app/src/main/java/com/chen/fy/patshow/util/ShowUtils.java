@@ -26,6 +26,7 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.XPopupImageLoader;
 
 import java.io.File;
+import java.net.URI;
 
 public class ShowUtils {
 
@@ -52,6 +53,11 @@ public class ShowUtils {
 
             @Override
             public File getImageFile(@NonNull Context context, @NonNull Object uri) {
+                try {
+                    return Glide.with(context).downloadOnly().load(uri).submit().get();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return null;
             }
         }).show();

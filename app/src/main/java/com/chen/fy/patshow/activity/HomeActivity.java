@@ -137,7 +137,6 @@ public class HomeActivity extends TakePhotoActivity {
                     , @NonNull Response<List<ShareResponse>> response) {
                 List<ShareResponse> list = response.body();
                 if (list != null) {
-                    Log.i("chensheng", "" + list.size());
                     mList.clear();
                     for (int i = list.size() - 1; i >= 0; i--) {
                         mList.add(list.get(i));

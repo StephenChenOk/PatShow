@@ -3,9 +3,11 @@ package com.chen.fy.patshow.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,9 +58,14 @@ public class UploadActivity extends AppCompatActivity {
         ivPhoto = findViewById(R.id.iv_photo_upload);
         ivPhoto.setOnClickListener(v -> ShowUtils.zoomPicture(this, v, mPhotoPath));
         findViewById(R.id.iv_return_upload).setOnClickListener(v -> finish());
-        findViewById(R.id.btn_upload).setOnClickListener(v ->
-                doUpload(etInput.getText().toString(), mPhotoPath)
-        );
+        findViewById(R.id.btn_upload).setOnClickListener(v -> {
+            String content = etInput.getText().toString();
+            if (!TextUtils.isEmpty(content)) {
+                doUpload(etInput.getText().toString(), mPhotoPath);
+            } else {
+                Toast.makeText(this, "内容不可为空", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initData() {

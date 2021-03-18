@@ -1,14 +1,11 @@
 package com.chen.fy.patshow.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -23,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,20 +34,18 @@ import com.chen.fy.patshow.adapter.ColorAdapter;
 import com.chen.fy.patshow.adapter.MappingAdapter;
 import com.chen.fy.patshow.adapter.TextLogoAdapter;
 import com.chen.fy.patshow.util.EditorUtil;
+import com.chen.fy.patshow.util.FileUtils;
 import com.chen.fy.patshow.util.RUtil;
 import com.chen.fy.patshow.util.ShowUtils;
 import com.chen.fy.patshow.view.QFRelativeLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 public class EditPhotoActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
-    /// 图片路径
+    /// 原生图片路径
     private String mPhotoPath;
+    /// 新图片路径，存在Logo
+    private String mNewPhotoPath;
     /// 当前编辑状态：文字/贴纸
     private TextView tvType;
     /// 保存按钮
@@ -90,22 +84,6 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
     private View mMantleView;
     /// 透明View, 实现点击蒙层效果
     private View transparentView;
-    private void showMantle(boolean isShow) {
-        if (mMantleView == null) {
-            // 初始化
-            mMantleView = findViewById(R.id.mantle);
-            float imgW = ivImage.getWidth();
-            float imgH = ivImage.getHeight();
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams((int) imgW, (int) imgH);
-            mMantleView.setLayoutParams(params);
-        }
-        if (isShow) {
-            mMantleView.setVisibility(View.VISIBLE);
-            tvType.setText(getResources().getString(R.string.empty));
-        } else {
-            mMantleView.setVisibility(View.GONE);
-        }
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -159,13 +137,18 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
             tvSave.setTextColor(getResources().getColor(R.color.blackColor4));
             rlImgBox.removeAllViews();
             rlImgBox.addView(ivImage);
+            Glide.with(this).load(mNewPhotoPath).into(ivImage);
         });
         // 保存按钮初始化
         tvSave = findViewById(R.id.tv_save_edit);
         tvSave.setOnClickListener(v -> {
             // 保存照片到相册
-            Bitmap bitmap = createBitmap(rlImgBox);
-            saveImageToGallery(EditPhotoActivity.this, bitmap);
+            mPhotoPath = FileUtils.saveViewToGallery(EditPhotoActivity.this, rlImgBox);
+            // 关闭Activity
+            Intent intent = new Intent();
+            intent.putExtra(RUtil.toString(R.string.photo_path), mPhotoPath);
+            setResult(Activity.RESULT_OK, intent);
+            finish();
         });
         tvSave.setClickable(false);
 
@@ -177,23 +160,8 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
     private void initData() {
         if (getIntent() != null) {
             mPhotoPath = getIntent().getStringExtra(RUtil.toString(R.string.photo_path));
+            mNewPhotoPath = getIntent().getStringExtra(RUtil.toString(R.string.new_photo_path));
             Glide.with(this).load(mPhotoPath).into(ivImage);
-            String name = getIntent().getStringExtra(RUtil.toString(R.string.server_back));
-            //addImgMark(name);
-        }
-    }
-
-    private void addImgMark(String name) {
-        vsMark = findViewById(R.id.vs_mark);
-        vsMark.inflate();
-        ImageView ivImg = findViewById(R.id.iv_imgMark);
-        switch (name) {
-            case "象鼻山":
-                ivImg.setImageResource(R.drawable.xbs_jpg);
-                break;
-            case "普贤塔":
-                ivImg.setImageResource(R.drawable.pxt_logo);
-                break;
         }
     }
 
@@ -322,6 +290,24 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
         findViewById(R.id.rl_bold_box).setOnClickListener(this);
         // 斜体
         findViewById(R.id.rl_italic_box).setOnClickListener(this);
+    }
+
+    /// 显示蒙层
+    private void showMantle(boolean isShow) {
+        if (mMantleView == null) {
+            // 初始化
+            mMantleView = findViewById(R.id.mantle);
+            float imgW = ivImage.getWidth();
+            float imgH = ivImage.getHeight();
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams((int) imgW, (int) imgH);
+            mMantleView.setLayoutParams(params);
+        }
+        if (isShow) {
+            mMantleView.setVisibility(View.VISIBLE);
+            tvType.setText(getResources().getString(R.string.empty));
+        } else {
+            mMantleView.setVisibility(View.GONE);
+        }
     }
 
     /// 弹出软键盘
@@ -484,7 +470,7 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
         // image
         ivMapping = new ImageView(this);
         RelativeLayout.LayoutParams mappingParams = new RelativeLayout.LayoutParams(
-                (int) RelativeLayout.LayoutParams.WRAP_CONTENT, (int) imgH/2);
+                (int) RelativeLayout.LayoutParams.WRAP_CONTENT, (int) imgH / 2);
         ivMapping.setLayoutParams(mappingParams);
 
         ivMapping.setImageResource(mappingID);
@@ -532,55 +518,5 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void afterTextChanged(Editable s) {
-    }
-
-    private Bitmap createBitmap(RelativeLayout view) {
-        view.setDrawingCacheEnabled(true);
-        //启用DrawingCache并创建位图
-        view.buildDrawingCache();
-        Bitmap cacheBitmap = view.getDrawingCache();
-        //创建一个DrawingCache的拷贝，因为DrawingCache得到的位图在禁用后会被回收
-        Bitmap bitmap = Bitmap.createBitmap(cacheBitmap);
-        //禁用DrawingCahce否则会影响性能
-        view.setDrawingCacheEnabled(false);
-        return bitmap;
-    }
-
-    public void saveImageToGallery(Context context, Bitmap bmp) {
-        //检查有没有存储权限
-        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            Toast.makeText(this, "请至权限中心打开应用权限", Toast.LENGTH_SHORT).show();
-        } else {
-            // 新建目录appDir，并把图片存到其下
-            File appDir = new File(context.getExternalFilesDir(null).getPath()
-                    + "BarcodeBitmap");
-            if (!appDir.exists()) {
-                appDir.mkdir();
-            }
-            String fileName = System.currentTimeMillis() + ".jpg";
-            File file = new File(appDir, fileName);
-            try {
-                FileOutputStream fos = new FileOutputStream(file);
-                bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-                fos.flush();
-                fos.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            // 把file里面的图片插入到系统相册中
-            try {
-                MediaStore.Images.Media.insertImage(context.getContentResolver(),
-                        file.getAbsolutePath(), fileName, null);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            // 通知相册更新
-            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
-            Toast.makeText(this, "保存成功", Toast.LENGTH_SHORT).show();
-        }
     }
 }

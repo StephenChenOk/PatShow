@@ -33,14 +33,16 @@
                 android:textColor="#FFFFFF"
                 android:textSize="18sp" />
 
-            <ImageView
-                android:id="@+id/iv_info_success"
+            <TextView
+                android:id="@+id/tv_save_success_identify"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 android:padding="15dp"
-                android:src="@drawable/ic_lightbulb_outline_white_24dp" />
+                android:text="保存"
+                android:textColor="@color/whiteColor"
+                android:textSize="17sp" />
 
         </RelativeLayout>
 
@@ -93,16 +95,42 @@
                 android:layout_height="1dp"
                 android:background="@color/lineColor" />
 
-            <RelativeLayout
-                android:id="@+id/rl_edit_box"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:padding="15dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/rl_info_box"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_account_balance_black_32dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="简介"
+                        android:textColor="#222831"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/lineColor"/>
+
+                <LinearLayout
+                    android:id="@+id/rl_edit_box"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -119,7 +147,7 @@
                         android:textSize="18sp" />
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
@@ -131,17 +159,17 @@
         android:background="@color/mantleColor"
         android:visibility="gone" />
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/success_identify_bottom_sheet"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:behavior_hideable="true"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-        <include
-            layout="@layout/success_identify_bottom_popup_layout"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/success_identify_bottom_sheet"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            app:behavior_hideable="true"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    </androidx.core.widget.NestedScrollView>
+            <include
+                layout="@layout/success_identify_bottom_popup_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
