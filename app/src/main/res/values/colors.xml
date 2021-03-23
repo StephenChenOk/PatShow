@@ -12,7 +12,6 @@
     <color name="albumFabRipple">#51b2ac</color>
 
     <color name="mainColor">#222831</color>
-    <color name="lineColor">#dddddd</color>
     <color name="imageBgColor">#F7F7F7</color>
     <color name="blackColor">#090909</color>
     <color name="blackColor1">#131313</color>
@@ -20,6 +19,11 @@
     <color name="blackColor3">#333333</color>
     <color name="blackColor4">#444444</color>
     <color name="blackColor5">#555555</color>
+    <color name="blackColorA">#AAAAAA</color>
+
+    <color name="lineColor">#efefef</color>
+
+
     <color name="grayColor">#727272</color>
     <color name="grayColor_D">#D2D2D2</color>
     <color name="grayColor_E">#E2E2E2</color>
@@ -34,6 +38,10 @@
 
 <!--    <color name="topBoxColor">#03A9F4</color>-->
     <color name="uploadBtnColor">#448AFF</color>
+
+
+    <color name="peaceMindBgColor">#FFF4E6</color>
+    <color name="AddInfoBgColor">#FFFBE5</color>
 
     <color name="transparent">#00000000</color>
     <color name="color1">#FFFFFF</color>
@@ -54,4 +62,6 @@
     <color name="color14">#FE8832</color>
     <color name="color15">#FACD34</color>
     <color name="color16">#DEAA45</color>
+    <color name="openTimeBoxColor">#F6F7F9</color>
+    <color name="infoBoxTextColor">#E18119</color>
 </resources>

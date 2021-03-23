@@ -104,5 +104,6 @@ public class IdentifyActivity extends AppCompatActivity {
         intent.putExtra(RUtil.toString(R.string.photo_path), mPhotoPath);
         intent.putExtra(RUtil.toString(R.string.server_back), name);
         startActivity(intent);
+        finish();
     }
 }

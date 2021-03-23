@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.ImageView;
@@ -18,13 +19,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.chen.fy.patshow.R;
 import com.chen.fy.patshow.util.FileUtils;
 import com.chen.fy.patshow.util.RUtil;
 import com.chen.fy.patshow.util.ShowUtils;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-
-import cn.bmob.v3.a.a.This;
 
 public class SuccessIdentifyActivity extends AppCompatActivity {
 
@@ -69,9 +70,22 @@ public class SuccessIdentifyActivity extends AppCompatActivity {
         tvName = findViewById(R.id.tv_name_success);
         rlImgBox = findViewById(R.id.rl_img_box);
 
+        // bottom sheet
+        View sheet = findViewById(R.id.success_identify_bottom_sheet);
+        sheetBehavior = BottomSheetBehavior.from(sheet);
+        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        // MantleView
+        mantleView = findViewById(R.id.mantle_success_identify);
+
+        setListener();
+    }
+
+    private void setListener() {
         // click listener
         /// 放大图片
-        ivImage.setOnClickListener(v -> ShowUtils.zoomPicture(this, ivImage, mNewPhotoPath));
+        ivImage.setOnClickListener(v -> {
+            ShowUtils.zoomPicture(this, ivImage, mNewPhotoPath);
+        });
         /// 保存图片
         findViewById(R.id.tv_save_success_identify).setOnClickListener(v -> {
             if (!isSaved) {
@@ -96,12 +110,7 @@ public class SuccessIdentifyActivity extends AppCompatActivity {
             startActivityForResult(intent, EDIT_PHOTO_CODE);
         });
 
-        // bottom sheet
-        View sheet = findViewById(R.id.success_identify_bottom_sheet);
-        sheetBehavior = BottomSheetBehavior.from(sheet);
-        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         // MantleView
-        mantleView = findViewById(R.id.mantle_success_identify);
         mantleView.setOnClickListener(v -> {
             sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             mantleView.setVisibility(View.GONE);
@@ -159,9 +168,15 @@ public class SuccessIdentifyActivity extends AppCompatActivity {
 
         if (requestCode == EDIT_PHOTO_CODE && resultCode == Activity.RESULT_OK) {
             if (data != null) {
+                /// 隐藏Mark
+                vsMark.setVisibility(View.GONE);
                 /// 改变图片
-                mPhotoPath = data.getStringExtra(RUtil.toString(R.string.photo_path));
-                Glide.with(this).load(mPhotoPath).into(ivImage);
+                mNewPhotoPath = data.getStringExtra(RUtil.toString(R.string.new_photo_path));
+                // 不适用缓存
+                RequestOptions requestOptions = new RequestOptions().
+                        skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE);
+                Glide.with(this).
+                        applyDefaultRequestOptions(requestOptions).load(mNewPhotoPath).into(ivImage);
             }
         }
     }

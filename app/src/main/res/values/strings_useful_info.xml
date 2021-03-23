@@ -1,0 +1,42 @@
+<resources>
+    <string name="xsjq_info">·以象鼻山为主体，位于市内桃花江注入漓江处，滨江路的南端，因其山形酷似一头巨象临江汲水而得名。\n
+·栩栩如生的形象引人入胜，被看做桂林山水代表，桂林城的象征，桂林市的城徽中心图案就是象山。\n
+·象山公园山孤拔陡峭，岩石古苍，崖间藤萝攀援，山榕依附。这里历来为旅游胜地，旖旎的风光，神奇的形象，动人的传说，倾倒了多少文人雅士。</string>
+
+    <!-- 安心游要点 -->
+    <string name="peaceMind_One">1、 景区以开放营业。</string>
+    <string name="peaceMind_Two">2、 疫情防控期间，进入景区需佩戴口罩并主动出示绿色健康码，同时请你配合景区做好防疫工作。</string>
+    <string name="peaceMind_Three">3、 景区实行限流措施，园区日接待量不超过10000人，建议合理安排行程。</string>
+
+    <string name="open_tourist">本景区仅向疫情低风险区域游客开放</string>
+    <string name="brief_introduction">简介</string>
+    <string name="show">显示</string>
+    <string name="useful_info">实用信息</string>
+    <string name="travel_notes">游玩须知</string>
+    <string name="strategy">攻略</string>
+    <string name="peace_mind_travel">安心游</string>
+    <string name="open_time">开放时间</string>
+    <string name="open_time_item">开放时间：</string>
+    <string name="date_four">4月1日-10月31日</string>
+    <string name="time_six">06:30–19:00</string>
+    <string name="date_eleven">11月1日-3月31日</string>
+    <string name="time_seven">07:00–18:30</string>
+
+    <!-- 交通 -->
+    <string name="traffic_strategy">交通攻略</string>
+    <string name="traffic">公交:\n
+两江机场 — 在机场乘坐机场大巴至桂林民航大厦转16路公交车民主路站下(35KM)\n
+桂林火车站 — 在火车站对面公交车站乘坐16路23路公交到象山景区站下(2KM)\n
+桂林汽车站 — 在其车站对面公交车站乘坐16路23路公交到象山景区站下(1KM)\n
+中心广场 — 从中心广场走至正阳步行街南端，再向东走200米\n
+自驾车:\n
+景区自带收费停车场\n
+下机场高速后沿翠竹路行至上海路口，左转(下立交桥),行至民主路的桂花广场(景区停车场)\n
+(自驾车)近"滨江路"与民主路交叉处行至民主路的桂花广场(景区停车场)</string>
+
+    <!-- 门票 -->
+    <string name="ticket_strategy">门票攻略</string>
+    <string name="date_ticket">1月1日 - 12月31日\n周一 - 周日</string>
+    <string name="add_info">补充说明</string>
+    <string name="travel_use_time">游玩一般用时1 - 3小时</string>
+</resources>

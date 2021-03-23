@@ -46,8 +46,9 @@
                     <ImageView
                         android:id="@+id/iv_xsjq"
                         android:layout_width="130dp"
+                        android:layout_height="140dp"
                         android:scaleType="centerCrop"
-                        android:layout_height="140dp" />
+                        android:src="@mipmap/xbs_main" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -92,6 +93,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/space_bottom_xsjq">
 
                     <LinearLayout
+                        android:id="@+id/ll_introduction_box"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -99,8 +101,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
                             android:src="@drawable/introduction" />
 
                         <Space
@@ -118,7 +120,9 @@
                         android:layout_width="10dp"
                         android:layout_height="1dp" />
 
+
                     <LinearLayout
+                        android:id="@+id/ll_strategy_box"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -126,35 +130,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/map" />
-
-                        <Space
-                            android:layout_width="1dp"
-                            android:layout_height="1dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="地图"
-                            android:textColor="@color/blackColor1" />
-                    </LinearLayout>
-
-                    <Space
-                        android:layout_width="10dp"
-                        android:layout_height="1dp" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="33dp"
+                            android:layout_height="33dp"
                             android:src="@drawable/strategy" />
 
                         <Space
@@ -165,6 +142,34 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="攻略"
+                            android:textColor="@color/blackColor1" />
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="1dp" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_map_box"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/map" />
+
+                        <Space
+                            android:layout_width="1dp"
+                            android:layout_height="1dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="地图"
                             android:textColor="@color/blackColor1" />
                     </LinearLayout>
 

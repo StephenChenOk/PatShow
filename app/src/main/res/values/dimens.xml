@@ -6,4 +6,15 @@
 
     <!--这个值决定DigitalThumbSeekBar的滑块的大小即SeekBar高度-->
     <dimen name="seekbarThumbSize">30dp</dimen>
+
+    <!-- 状态栏高度 -->
+    <dimen name="statusBarSpace">27dp</dimen>
+    <!-- 宽分割条 -->
+    <dimen name="wideLine">10dp</dimen>
+    <!-- 细分割条 -->
+    <dimen name="thinLine">1dp</dimen>
+    <dimen name="useful_info_text_21">21sp</dimen>
+    <dimen name="useful_info_text_17">17sp</dimen>
+    <dimen name="useful_info_text_16">16sp</dimen>
+
 </resources>

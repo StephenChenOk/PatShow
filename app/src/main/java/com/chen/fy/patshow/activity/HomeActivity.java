@@ -91,19 +91,6 @@ public class HomeActivity extends TakePhotoActivity {
 
     private void initView() {
         ShowUtils.changeStatusBarTextImgColor(this, false);
-        // 象山景区图片
-        ImageView ivHome = findViewById(R.id.iv_xsjq);
-        Glide.with(this).load(R.drawable.xbs_main).into(ivHome);
-        ivHome.setOnClickListener(v -> ShowUtils.zoomPicture(this, v, R.drawable.xbs_main));
-
-        // 识别按钮
-        findViewById(R.id.fab_distinguish).setOnClickListener(v -> openCamera());
-
-        // 上传
-        findViewById(R.id.btn_publish_mine).setOnClickListener(v -> {
-            isUpload = true;
-            mTakePhoto.onPickMultiple(1);
-        });
 
         // recyclerView
         RecyclerView recyclerView = findViewById(R.id.rv_home);
@@ -115,6 +102,36 @@ public class HomeActivity extends TakePhotoActivity {
         ));
         mAdapter.setShareResponseList(mList);
         recyclerView.setAdapter(mAdapter);
+
+        setListener();
+    }
+
+    private void setListener(){
+        // 象山景区图片
+        findViewById(R.id.iv_xsjq).setOnClickListener(v ->
+                ShowUtils.zoomPicture(this, v, R.drawable.xbs_main));
+
+        // 识别按钮
+        findViewById(R.id.fab_distinguish).setOnClickListener(v -> openCamera());
+
+        // 上传
+        findViewById(R.id.btn_publish_mine).setOnClickListener(v -> {
+            isUpload = true;
+            mTakePhoto.onPickMultiple(1);
+        });
+
+        // 简介
+        findViewById(R.id.ll_introduction_box).setOnClickListener(v->{
+            UsefulInfoActivity.start(this);
+        });
+        // 攻略
+        findViewById(R.id.ll_strategy_box).setOnClickListener(v->{
+            UsefulInfoActivity.start(this);
+        });
+        // 地图
+        findViewById(R.id.ll_map_box).setOnClickListener(v->{
+
+        });
     }
 
     /// 初始化TakePhoto

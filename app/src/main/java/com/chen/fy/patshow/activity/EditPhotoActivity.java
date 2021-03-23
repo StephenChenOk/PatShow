@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewStub;
@@ -29,6 +30,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.chen.fy.patshow.R;
 import com.chen.fy.patshow.adapter.ColorAdapter;
 import com.chen.fy.patshow.adapter.MappingAdapter;
@@ -137,16 +140,16 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
             tvSave.setTextColor(getResources().getColor(R.color.blackColor4));
             rlImgBox.removeAllViews();
             rlImgBox.addView(ivImage);
-            Glide.with(this).load(mNewPhotoPath).into(ivImage);
+            Glide.with(this).load(mPhotoPath).into(ivImage);
         });
         // 保存按钮初始化
         tvSave = findViewById(R.id.tv_save_edit);
         tvSave.setOnClickListener(v -> {
             // 保存照片到相册
-            mPhotoPath = FileUtils.saveViewToGallery(EditPhotoActivity.this, rlImgBox);
+            mNewPhotoPath = FileUtils.saveViewToGallery(EditPhotoActivity.this, rlImgBox);
             // 关闭Activity
             Intent intent = new Intent();
-            intent.putExtra(RUtil.toString(R.string.photo_path), mPhotoPath);
+            intent.putExtra(RUtil.toString(R.string.new_photo_path), mNewPhotoPath);
             setResult(Activity.RESULT_OK, intent);
             finish();
         });
@@ -161,7 +164,10 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
         if (getIntent() != null) {
             mPhotoPath = getIntent().getStringExtra(RUtil.toString(R.string.photo_path));
             mNewPhotoPath = getIntent().getStringExtra(RUtil.toString(R.string.new_photo_path));
-            Glide.with(this).load(mPhotoPath).into(ivImage);
+            // 不适用缓存
+            RequestOptions requestOptions = new RequestOptions().
+                    skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE);
+            Glide.with(this).applyDefaultRequestOptions(requestOptions).load(mNewPhotoPath).into(ivImage);
         }
     }
 
