@@ -2,18 +2,6 @@ package com.chen.fy.patshow.util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.Shader;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -22,13 +10,10 @@ import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.chen.fy.patshow.R;
-import com.chen.fy.patshow.activity.HomeActivity;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.XPopupImageLoader;
 
 import java.io.File;
-import java.net.URI;
 
 public class ShowUtils {
 

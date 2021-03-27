@@ -24,7 +24,7 @@
             android:textColor="@color/whiteColor"
             android:textSize="17sp" />
 
-        <com.chen.fy.patshow.view.DigitalThumbSeekBar
+        <com.chen.fy.patshow.view.customize.DigitalThumbSeekBar
             android:id="@+id/sb_transparency"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
