@@ -37,8 +37,12 @@ public class SuccessIdentifyActivity extends AppCompatActivity {
     private ViewStub vsMark;
     private TextView tvName;
 
-    private BottomSheetBehavior sheetBehavior;
     private View mantleView;
+    // bottom sheet
+    private BottomSheetBehavior sheetBehavior;
+    private ImageView ivImageSceneryInfo;
+    private TextView tvNameSceneryInfo;
+    private TextView tvContentSceneryInfo;
 
     // 是否已经保存照片，默认只可以保存一次
     private boolean isSaved = false;
@@ -70,13 +74,21 @@ public class SuccessIdentifyActivity extends AppCompatActivity {
         rlImgBox = findViewById(R.id.rl_img_box);
 
         // bottom sheet
-        View sheet = findViewById(R.id.success_identify_bottom_sheet);
-        sheetBehavior = BottomSheetBehavior.from(sheet);
-        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        bindBottomSheet();
         // MantleView
         mantleView = findViewById(R.id.mantle_success_identify);
 
         setListener();
+    }
+
+    private void bindBottomSheet() {
+        View sheet = findViewById(R.id.success_identify_bottom_sheet);
+        sheetBehavior = BottomSheetBehavior.from(sheet);
+        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        ivImageSceneryInfo = findViewById(R.id.iv_image_scenery_info);
+        tvNameSceneryInfo = findViewById(R.id.tv_name_scenery_info);
+        tvContentSceneryInfo = findViewById(R.id.tv_content_scenery_info);
     }
 
     private void setListener() {
@@ -123,6 +135,7 @@ public class SuccessIdentifyActivity extends AppCompatActivity {
             String name = getIntent().getStringExtra(RUtil.toString(R.string.server_back));
             tvName.setText(name);
             addTextLogoMark(name);
+            fillBottomSheetInfo(name);
         }
     }
 
@@ -136,6 +149,17 @@ public class SuccessIdentifyActivity extends AppCompatActivity {
             ivImg.setImageResource(getImgID(name));
             handler.sendEmptyMessage(0);
         });
+    }
+
+    /**
+     * 简介信息填充
+     */
+    private void fillBottomSheetInfo(String name) {
+        if (name.equals(RUtil.toString(R.string.pxt))) {
+            Glide.with(this).load(R.drawable.pxt_main).into(ivImageSceneryInfo);
+            tvNameSceneryInfo.setText(RUtil.toString(R.string.pxt));
+            tvContentSceneryInfo.setText(RUtil.toString(R.string.pxt_info));
+        }
     }
 
     private int getImgID(String name) {

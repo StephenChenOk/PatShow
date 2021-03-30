@@ -1,4 +1,7 @@
 <resources>
+    <string name="xbs">象鼻山</string>
+    <string name="pxt">普贤塔</string>
+
     <string name="xbs_info">象鼻山原名漓山，位于广西区桂林市内桃花江与漓江汇流处。\n
         山因酷似一只站在江边伸鼻豪饮漓江甘泉的巨象而得名，被人们称为桂林山水的象征。\n
         象鼻山以神奇著称。其神奇，首先是形神毕似，其次是在鼻腿之间造就一轮临水明月，构成“象山水月”奇景。\n</string>
