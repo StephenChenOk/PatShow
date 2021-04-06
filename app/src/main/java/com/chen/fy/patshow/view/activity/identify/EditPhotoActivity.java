@@ -135,11 +135,10 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
             tvType.setVisibility(View.VISIBLE);
         });
         findViewById(R.id.tv_cancel_edit).setOnClickListener(v -> {
-            tvSave.setClickable(false);
-            tvSave.setTextColor(getResources().getColor(R.color.blackColor4));
             rlImgBox.removeAllViews();
             rlImgBox.addView(ivImage);
             Glide.with(this).load(mPhotoPath).into(ivImage);
+            saveAble();
         });
         // 保存按钮初始化
         tvSave = findViewById(R.id.tv_save_edit);
@@ -182,8 +181,7 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
             tvType.setVisibility(View.GONE);
             mTextBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             textDefine();
-            tvSave.setClickable(true);
-            tvSave.setTextColor(getResources().getColor(R.color.whiteColor));
+            saveAble();
         });
 
         View bottomSheet = findViewById(R.id.text_bottom_sheet);
@@ -226,14 +224,13 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
     private void bindMappingBottomSheet() {
         findViewById(R.id.iv_cancel_mapping).setOnClickListener(v -> {
             tvType.setVisibility(View.GONE);
-            rlImgBox.removeView(ivMapping);
+            rlImgBox.removeView(mMappingBox);
             mMappingBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         });
         findViewById(R.id.iv_done_mapping).setOnClickListener(v -> {
             tvType.setVisibility(View.GONE);
             mappingDefine();
-            tvSave.setClickable(true);
-            tvSave.setTextColor(getResources().getColor(R.color.whiteColor));
+            saveAble();
         });
         // RecyclerView
         RecyclerView rvMapping = findViewById(R.id.rv_mapping);
@@ -334,6 +331,12 @@ public class EditPhotoActivity extends AppCompatActivity implements View.OnClick
         InputMethodManager inputManager =
                 (InputMethodManager) editText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+    }
+
+    /// 可保存图片
+    private void saveAble(){
+        tvSave.setClickable(true);
+        tvSave.setTextColor(getResources().getColor(R.color.whiteColor));
     }
 
     @Override

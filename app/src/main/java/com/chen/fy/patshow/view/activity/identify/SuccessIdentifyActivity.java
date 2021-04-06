@@ -92,7 +92,8 @@ public class SuccessIdentifyActivity extends AppCompatActivity {
     }
 
     private void setListener() {
-        // click listener
+        /// back
+        findViewById(R.id.iv_return_upload).setOnClickListener(v -> finish());
         /// 放大图片
         ivImage.setOnClickListener(v -> {
             ShowUtils.zoomPicture(this, ivImage, mNewPhotoPath);

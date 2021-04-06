@@ -20,7 +20,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:padding="15dp"
-                android:src="@drawable/ic_arrow_back_white_24dp" />
+                android:src="@drawable/ic_navigate_before_white_24dp" />
 
             <TextView
                 android:id="@+id/tv_name_success"
@@ -42,7 +42,7 @@
                 android:padding="15dp"
                 android:text="保存"
                 android:textColor="@color/whiteColor"
-                android:textSize="17sp" />
+                android:textSize="16sp" />
 
         </RelativeLayout>
 
