@@ -34,7 +34,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyTheme">
-        <activity android:name=".view.activity.home.HomeActivity">
+        <activity android:name=".home.view.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,22 +42,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.activity.identify.IdentifyActivity"
+            android:name=".identify.view.activity.IdentifyActivity"
             android:theme="@style/MyTheme" />
         <activity
-            android:name=".view.activity.identify.SuccessIdentifyActivity"
+            android:name=".identify.view.activity.SuccessIdentifyActivity"
             android:theme="@style/MyTheme" />
         <activity
-            android:name=".view.activity.identify.EditPhotoActivity"
+            android:name=".identify.edit.view.EditPhotoActivity"
             android:theme="@style/MyTheme" />
         <activity
-            android:name=".view.activity.identify.UploadActivity"
+            android:name=".identify.view.activity.UploadActivity"
             android:theme="@style/MyTheme" />
         <activity
-            android:name=".view.activity.home.UsefulInfoActivity"
+            android:name=".home.view.UsefulInfoActivity"
             android:theme="@style/MyTheme" />
         <activity
-            android:name=".view.activity.home.MapActivity"
+            android:name=".home.view.MapActivity"
             android:theme="@style/MyTheme" />
 
         <meta-data

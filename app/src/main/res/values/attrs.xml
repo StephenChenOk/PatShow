@@ -12,15 +12,4 @@
             <enum name="float_two" value="2"/>
         </attr>
     </declare-styleable>
-
-    <declare-styleable name="AppendViewAfterTextView">
-        <attr name="text" format="string"/>
-        <attr name="textSize" format="dimension"/>
-        <!-- 主TextColor -->
-        <attr name="textColor_Main" format="color"/>
-        <!-- 显示/隐藏TextColor -->
-        <attr name="textColor_Show" format="color"/>
-        <!-- 不显示全部时最多显示的行数 -->
-        <attr name="maxLine" format="integer"/>
-    </declare-styleable>
 </resources>

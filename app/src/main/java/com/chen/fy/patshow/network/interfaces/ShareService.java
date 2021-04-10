@@ -1,7 +1,7 @@
 package com.chen.fy.patshow.network.interfaces;
 
-import com.chen.fy.patshow.data.model.home.ShareResponse;
-import com.chen.fy.patshow.data.model.home.ShareResponseBase;
+import com.chen.fy.patshow.home.share.data.ShareResponse;
+import com.chen.fy.patshow.home.share.data.ShareResponseBase;
 
 import java.util.List;
 

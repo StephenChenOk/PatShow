@@ -1,6 +1,6 @@
 package com.chen.fy.patshow.network.interfaces;
 
-import com.chen.fy.patshow.data.model.identify.IdentifyResponse;
+import com.chen.fy.patshow.identify.data.IdentifyResponse;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
