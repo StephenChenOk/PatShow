@@ -20,5 +20,22 @@
     <string name="identify_error">无</string>
 
     <string name="xsjq_name">象山景区</string>
+    <string name="register">注册</string>
+    <string name="account">账号</string>
+    <string name="password">密码</string>
+    <string name="define_password">确认密码</string>
+    <string name="register_info">注册即可使用</string>
+    <string name="login_info">登录即可展示自己</string>
+    <string name="login">登录</string>
+    <string name="no_account">没有账号？选择注册</string>
+    <string name="register_success">注册成功</string>
+    <string name="userInfo_sp_name">userInfo_sp_name</string>
+    <string name="id_key">id_key</string>
+    <string name="login_success">登录成功</string>
+    <string name="nickname">nickname</string>
+    <string name="head_icon">head_icon</string>
+    <string name="account_key">account</string>
+    <string name="password_key">password</string>
+
 
 </resources>

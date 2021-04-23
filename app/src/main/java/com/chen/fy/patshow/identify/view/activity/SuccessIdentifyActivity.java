@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.ObjectKey;
 import com.chen.fy.patshow.R;
 import com.chen.fy.patshow.identify.edit.view.EditPhotoActivity;
 import com.chen.fy.patshow.util.FileUtils;
@@ -197,11 +198,13 @@ public class SuccessIdentifyActivity extends AppCompatActivity {
                 vsMark.setVisibility(View.GONE);
                 /// 改变图片
                 mNewPhotoPath = data.getStringExtra(RUtil.toString(R.string.new_photo_path));
-                // 不适用缓存
-                RequestOptions requestOptions = new RequestOptions().
-                        skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE);
-                Glide.with(this).
-                        applyDefaultRequestOptions(requestOptions).load(mNewPhotoPath).into(ivImage);
+//                // 不适用缓存
+//                RequestOptions requestOptions = new RequestOptions().
+//                        skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE);
+
+                RequestOptions requestOptions = new RequestOptions()
+                        .signature(new ObjectKey(System.currentTimeMillis()));
+                Glide.with(this).applyDefaultRequestOptions(requestOptions) .load(mNewPhotoPath).into(ivImage);
             }
         }
     }

@@ -3,9 +3,9 @@ package com.chen.fy.patshow.network;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ShareServiceCreator {
+public class MainServiceCreator {
 
-    private static final String BASE_URL = "http://121.4.199.173:8088/share/";
+    public static final String BASE_URL = "http://121.4.199.173:8088/";
 
     private static Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)

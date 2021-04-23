@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.ObjectKey;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.XPopupImageLoader;
 
@@ -35,10 +36,7 @@ public class ShowUtils {
         new XPopup.Builder(context).asImageViewer((ImageView) view, url, new XPopupImageLoader() {
             @Override
             public void loadImage(int position, @NonNull Object uri, @NonNull ImageView imageView) {
-                // 不适用缓存
-                RequestOptions requestOptions = new RequestOptions().
-                        skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE);
-                Glide.with(context).applyDefaultRequestOptions(requestOptions).load(uri).into(imageView);
+                Glide.with(context).load(uri).into(imageView);
             }
 
             @Override

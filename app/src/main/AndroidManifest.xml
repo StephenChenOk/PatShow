@@ -17,13 +17,13 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <!--用于进行网络定位-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!--用于访问GPS定位-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!--用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <!--用于申请调用A-GPS模块-->
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
 
     <application
         android:name=".MyApplication"
@@ -59,13 +59,25 @@
         <activity
             android:name=".home.view.MapActivity"
             android:theme="@style/MyTheme" />
+        <activity
+            android:name=".user.UserActivity"
+            android:theme="@style/MyTheme" />
+        <activity
+            android:name=".user.view.LoginActivity"
+            android:theme="@style/MyTheme" />
+        <activity
+            android:name=".user.view.RegisterActivity"
+            android:theme="@style/MyTheme" />
+        <activity
+            android:name=".user.view.MyInfoActivity"
+            android:theme="@style/MyTheme" />
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="9168fa1009833af561390db0d6cfe9b2" />
 
         <!--实现定位,每个app拥有自己单独的定位service-->
-        <service android:name="com.amap.api.location.APSService"/>
+        <service android:name="com.amap.api.location.APSService" />
     </application>
 
 </manifest>

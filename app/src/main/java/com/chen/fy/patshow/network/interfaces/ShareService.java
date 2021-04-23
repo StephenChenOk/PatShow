@@ -1,7 +1,7 @@
 package com.chen.fy.patshow.network.interfaces;
 
-import com.chen.fy.patshow.home.share.data.ShareResponse;
-import com.chen.fy.patshow.home.share.data.ShareResponseBase;
+import com.chen.fy.patshow.home.share.data.ShareInfo;
+import com.chen.fy.patshow.home.share.data.BaseShareResponse;
 
 import java.util.List;
 
@@ -12,6 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 
 public interface ShareService {
@@ -19,9 +20,11 @@ public interface ShareService {
     /// 分享图片
     @POST("share")
     @Multipart
-    Call<ShareResponseBase> share(@Part("content") RequestBody content, @Part MultipartBody.Part file);
+    Call<BaseShareResponse> share(@Part("content") RequestBody content, @Part MultipartBody.Part file);
 
     /// 获取图片
-    @GET("list")
-    Call<List<ShareResponse>> getList();
+    @GET("share/list")
+    Call<List<ShareInfo>> getList(@Query("user_id") Integer userId);
+
+
 }

@@ -11,6 +11,8 @@
     <color name="albumRatedStar">#ffeb5a</color>
     <color name="albumFabRipple">#51b2ac</color>
 
+    <color name="bgBlack">#161824</color>
+
     <color name="mainColor">#222831</color>
     <color name="imageBgColor">#F7F7F7</color>
     <color name="blackColor">#090909</color>
@@ -64,4 +66,5 @@
     <color name="color16">#DEAA45</color>
     <color name="openTimeBoxColor">#F6F7F9</color>
     <color name="infoBoxTextColor">#E18119</color>
+    <color name="item_selected">#EEEEEE</color>
 </resources>

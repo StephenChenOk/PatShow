@@ -3,6 +3,7 @@ package com.chen.fy.patshow.home.view;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,16 +17,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.chen.fy.patshow.R;
 import com.chen.fy.patshow.identify.view.activity.IdentifyActivity;
 import com.chen.fy.patshow.identify.view.activity.UploadActivity;
 import com.chen.fy.patshow.home.data.adapter.HomeAdapter;
-import com.chen.fy.patshow.home.share.data.ShareResponse;
+import com.chen.fy.patshow.home.share.data.ShareInfo;
 import com.chen.fy.patshow.network.interfaces.ShareService;
-import com.chen.fy.patshow.network.ShareServiceCreator;
+import com.chen.fy.patshow.network.MainServiceCreator;
+import com.chen.fy.patshow.user.view.LoginActivity;
+import com.chen.fy.patshow.user.UserActivity;
 import com.chen.fy.patshow.util.RUtil;
 import com.chen.fy.patshow.util.ShowUtils;
 import com.lxj.xpopup.XPopup;
@@ -47,7 +50,7 @@ public class HomeActivity extends TakePhotoActivity {
     private static final int REQUEST_CODE = 1;
     private static final String TAG = "HomeActivity";
 
-    private List<ShareResponse> mList = new ArrayList<>();
+    private List<ShareInfo> mList = new ArrayList<>();
 
     private HomeAdapter mAdapter;
 
@@ -92,13 +95,11 @@ public class HomeActivity extends TakePhotoActivity {
 
         // recyclerView
         RecyclerView recyclerView = findViewById(R.id.rv_home);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
-        recyclerView.setLayoutManager(layoutManager);
+        StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(2
+                , StaggeredGridLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(manager);
         mAdapter = new HomeAdapter(this, R.layout.home_item);
-        mAdapter.setOnItemClickListener((imageView, url) -> ShowUtils.zoomPicture(
-                this, imageView, url
-        ));
-        mAdapter.setShareResponseList(mList);
+        mAdapter.setData(mList);
         recyclerView.setAdapter(mAdapter);
 
         setListener();
@@ -109,8 +110,11 @@ public class HomeActivity extends TakePhotoActivity {
         findViewById(R.id.iv_xsjq).setOnClickListener(v ->
                 ShowUtils.zoomPicture(this, v, R.drawable.xbs_main));
 
-        // 识别按钮
+        // 识别
         findViewById(R.id.fab_distinguish).setOnClickListener(v -> openCamera());
+
+        // 用户
+        findViewById(R.id.fab_user).setOnClickListener(v -> gotoUser());
 
         // 上传
         findViewById(R.id.btn_publish_mine).setOnClickListener(v -> {
@@ -144,24 +148,22 @@ public class HomeActivity extends TakePhotoActivity {
     }
 
     private void getList() {
-        ShareService shareService = ShareServiceCreator.create(ShareService.class);
+        ShareService shareService = MainServiceCreator.create(ShareService.class);
         // 自动开启子线程在后台执行
-        shareService.getList().enqueue(new Callback<List<ShareResponse>>() {
+        shareService.getList(null).enqueue(new Callback<List<ShareInfo>>() {
             @Override
-            public void onResponse(@NonNull Call<List<ShareResponse>> call
-                    , @NonNull Response<List<ShareResponse>> response) {
-                List<ShareResponse> list = response.body();
+            public void onResponse(@NonNull Call<List<ShareInfo>> call
+                    , @NonNull Response<List<ShareInfo>> response) {
+                List<ShareInfo> list = response.body();
                 if (list != null) {
-                    mList.clear();
-                    for (int i = list.size() - 1; i >= 0; i--) {
-                        mList.add(list.get(i));
-                    }
+                    mList = response.body();
+                    mAdapter.setData(mList);
                     mAdapter.notifyDataSetChanged();
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<ShareResponse>> call
+            public void onFailure(@NonNull Call<List<ShareInfo>> call
                     , @NonNull Throwable t) {
                 Log.i(TAG, "GetAllShareInfo Failure");
             }
@@ -185,6 +187,19 @@ public class HomeActivity extends TakePhotoActivity {
                             }
                         })
                 .show();
+    }
+
+    private void gotoUser() {
+        SharedPreferences sharedPreferences = getSharedPreferences(
+                RUtil.toString(R.string.userInfo_sp_name), MODE_PRIVATE);
+        int id = sharedPreferences
+                .getInt(RUtil.toString(R.string.id_key), RUtil.toInt(R.integer.no_login));
+        if (id == RUtil.toInt(R.integer.no_login)) {
+            LoginActivity.start(this);
+        } else {
+            UserActivity.start(this);
+        }
+
     }
 
     ///  会与onActivityResult造成冲突

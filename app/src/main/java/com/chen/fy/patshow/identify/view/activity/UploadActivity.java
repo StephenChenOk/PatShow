@@ -8,24 +8,20 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.bumptech.glide.Glide;
 import com.chen.fy.patshow.R;
-import com.chen.fy.patshow.home.share.data.ShareResponse;
-import com.chen.fy.patshow.home.share.data.ShareResponseBase;
-import com.chen.fy.patshow.network.ShareServiceCreator;
+import com.chen.fy.patshow.home.share.data.ShareInfo;
+import com.chen.fy.patshow.home.share.data.BaseShareResponse;
+import com.chen.fy.patshow.network.MainServiceCreator;
 import com.chen.fy.patshow.network.interfaces.ShareService;
 import com.chen.fy.patshow.util.RUtil;
 import com.chen.fy.patshow.util.ShowUtils;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
-
 import java.io.File;
-
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -86,12 +82,12 @@ public class UploadActivity extends AppCompatActivity {
         RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpg"), new File(imgPath));
         MultipartBody.Part filePart = MultipartBody.Part.createFormData("img"
                 , RUtil.toString(R.string.photo_name), fileBody);
-        ShareService shareService = ShareServiceCreator.create(ShareService.class);
-        shareService.share(contentBody, filePart).enqueue(new Callback<ShareResponseBase>() {
+        ShareService shareService = MainServiceCreator.create(ShareService.class);
+        shareService.share(contentBody, filePart).enqueue(new Callback<BaseShareResponse>() {
             @Override
-            public void onResponse(@NonNull Call<ShareResponseBase> call
-                    , @NonNull Response<ShareResponseBase> response) {
-                ShareResponseBase responseBase = response.body();
+            public void onResponse(@NonNull Call<BaseShareResponse> call
+                    , @NonNull Response<BaseShareResponse> response) {
+                BaseShareResponse responseBase = response.body();
                 if (responseBase != null) {
                     String msg = responseBase.getMsg();
                     if (msg.equals("success")) {
@@ -108,15 +104,15 @@ public class UploadActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<ShareResponseBase> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<BaseShareResponse> call, @NonNull Throwable t) {
                 loading.dismiss();
                 Log.e(TAG, "upload file error");
             }
         });
     }
 
-    private void uploadSuccess(ShareResponseBase responseBase) {
-        ShareResponse share = responseBase.getResponse();
+    private void uploadSuccess(BaseShareResponse responseBase) {
+        ShareInfo share = responseBase.getResponse();
         String imgURL = share.getImgURL();
         Intent intent = new Intent();
         intent.putExtra(RUtil.toString(R.string.upload_result), imgURL);

@@ -1,8 +1,8 @@
 package com.chen.fy.patshow.home.share.data;
 
-public class ShareResponseBase {
+public class BaseShareResponse {
     private String msg;
-    private ShareResponse response;
+    private ShareInfo response;
 
     public String getMsg() {
         return msg;
@@ -12,11 +12,11 @@ public class ShareResponseBase {
         this.msg = msg;
     }
 
-    public ShareResponse getResponse() {
+    public ShareInfo getResponse() {
         return response;
     }
 
-    public void setResponse(ShareResponse response) {
+    public void setResponse(ShareInfo response) {
         this.response = response;
     }
 }
